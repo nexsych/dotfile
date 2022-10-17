@@ -1,0 +1,77 @@
+#!/bin/sh
+
+pdir=$HOME/img/paper
+xr=$XDG_CONFIG_HOME/x/xresources
+dunrc=$XDG_CONFIG_HOME/dunst/dunstrc
+
+[ ! -f "$xr" ] && echo "xresources doesn't exist as defined." && exit
+[ ! -f "$dunrc" ] && echo "dunstrc doesn't exist as defined." && exit
+
+if [ -n "$1" ] ; then
+	if [ -f "$1" ] ; then
+		paper=$1
+	elif [ "$1" = -s ] ; then
+		paper=$(find "$pdir" -type f | shuf -n1)
+	else
+		echo "Wrong option or file doesn't exitst." ; exit
+	fi
+else
+	[ ! -d "$pdir" ] && echo "Paper directory doesn't exist as defined" && exit
+	paper=$(sxiv -ort "$pdir")
+	if [ ! -f "$paper" ] ; then
+		if [ -z "$paper" ] ; then
+			exit
+		elif [ -n "$paper" ] ; then
+			if [ "$(echo "$paper" | wc -w)" -gt 1 ] ; then
+				echo "Wrong usage: multiple files selected, choose one." ; exit
+			else
+				echo "File doesn't exist: deleted or moved" ; exit
+			fi
+		fi
+	fi
+fi
+
+echo ":: xwallpaper now"
+	xwallpaper --zoom "$paper"
+echo ":: xwallpaper -> xinitrc"
+	sed -i "/xwallpap/c\xwallpaper --zoom $paper &" "$XINITRC"
+echo ":: pywal"
+	wal -i "$paper" > /dev/null
+
+
+echo ":: xresources"
+
+echo "     * replacing colors"
+	sed -i '7,$d' "$xr"
+	sed '20,52!d' "$XDG_CACHE_HOME"/wal/colors.Xresources >> "$xr"
+
+echo "     * sxivbr color changing"
+	sxivbr=$(grep "*"color7 "$xr" | awk '{print $NF}')
+	sed -i "/Sxiv.fore/c\Sxiv.foreground: $sxivbr" "$xr"
+
+echo "     * running xrdb"
+	xrdb "$xr"
+
+
+
+echo ":: dwm color reloading"
+	xdotool key super+F5
+
+
+
+echo ":: dunst color"
+
+echo "     * background and foreground"
+	dunbg=$(grep "*"color0 "$xr" | awk '{print $NF}')
+	dunfg=$(grep "*"color6 "$xr" | awk '{print $NF}')
+
+	sed -i "/background = /c\background = \"$dunbg\"" "$dunrc"
+	sed -i "/foreground = /c\foreground = \"$dunfg\"" "$dunrc"
+
+echo "     * frame"
+	dunfr=$(grep "*"color14 "$xr" | awk '{print $NF}')
+	sed -i "/frame_color =/c\frame_color = \"$dunfr\"" "$dunrc"
+
+	pkill dunst ; notify-send "HeLLO FRieND" "ThIS iS aN eXaMPle nOTiFiCATioN."
+
+echo "--DONE"

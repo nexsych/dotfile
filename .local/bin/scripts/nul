@@ -1,0 +1,22 @@
+#!/bin/sh
+
+hst=$XDG_STATE_HOME/nulhst
+if [ -n "$1" ] ; then
+	if [ "$1" = -c ] ; then
+		rm -f "$hst" ; exit
+	elif [ "$1" = -h ] ; then
+		[ -f "$hst" ] && cat "$hst" || echo "History is empty" ; exit
+	elif [ -f "$1" ] ; then
+		file=$1
+	else
+		echo "Wrong option or file doesn't exitst." ; exit
+	fi
+else
+	file=$(find "$HOME" -type f | dmenu -l 25 -i)
+	[ ! -f "$file" ] && exit
+fi
+
+output=$(curl -F"file=@$file" http://0x0.st) && echo "$output" &&
+echo "$output" | xsel -ib
+echo "$file" | sed "s;$HOME;~;"
+printf "%s\t\t%s" "$file" "$(xsel -ob)" | sed "s;$HOME;~;" > "$hst"

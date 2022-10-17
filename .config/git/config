@@ -1,0 +1,6 @@
+[user]
+	name = "Devansh Gupta"
+	email = nexsych@gmail.com
+[core]
+	editor = nvim
+	autocrlf = input

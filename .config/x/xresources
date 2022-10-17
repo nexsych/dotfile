@@ -1,0 +1,40 @@
+Sxiv.background: #000000
+
+Sxiv.foreground: #bdbcaf
+
+Sxiv.font: JetBrains Mono
+
+! Colors 0-15.
+*.color0: #0E0C0A
+*color0:  #0E0C0A
+*.color1: #4F4737
+*color1:  #4F4737
+*.color2: #64503A
+*color2:  #64503A
+*.color3: #565447
+*color3:  #565447
+*.color4: #6D6557
+*color4:  #6D6557
+*.color5: #6C6855
+*color5:  #6C6855
+*.color6: #8B6E5A
+*color6:  #8B6E5A
+*.color7: #bdbcaf
+*color7:  #bdbcaf
+*.color8: #84837a
+*color8:  #84837a
+*.color9: #4F4737
+*color9:  #4F4737
+*.color10: #64503A
+*color10:  #64503A
+*.color11: #565447
+*color11:  #565447
+*.color12: #6D6557
+*color12:  #6D6557
+*.color13: #6C6855
+*color13:  #6C6855
+*.color14: #8B6E5A
+*color14:  #8B6E5A
+*.color15: #bdbcaf
+*color15:  #bdbcaf
+background: #0E0C0A

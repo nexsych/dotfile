@@ -1,0 +1,31 @@
+# Audio
+super+{z,x}
+	pamixer -{d,i} 5; kill -44 $(pidof dwmblocks)
+XF86Audio{Lower,Raise}Volume
+	pamixer -{d,i} 5; kill -44 $(pidof dwmblocks)
+{super+c,XF86AudioMute}
+	pamixer -t; kill -44 $(pidof dwmblocks)
+super+C
+	pactl set-card-profile alsa_card.pci-0000_00_1b.0 output:hdmi-stereo+input:analog-stereo
+
+# XF86 keys
+XF86Mail
+	firefox https://mail.google.com/mail/u/0/h/
+
+# ?
+super+{i,I}
+	{clipmenu,rm -rf $XDG_STATE_HOME/clipmenu*/*}
+alt+{F7,F6,F4,F2}
+	{slock,systemctl suspend -i,systemctl poweroff,systemctl reboot}
+super+o;i
+	redshift -{x,O 4500}
+super+o;{h,H}
+	dunstctl {history-pop,close-all}
+super+o;{p,P}
+	ss=/home/nexsych/img/ss/$(date +%y%m%d_%H%M%S).jpg ; maim {_,--select} $ss && notify-send -i $ss "Screenshot captured"
+#super+o;e
+#	emacsclient -c -a 'emacs'
+
+# ?
+ctrl+F6
+	nmcli device wifi rescan

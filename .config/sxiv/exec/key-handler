@@ -1,0 +1,10 @@
+#!/bin/sh
+
+while read file
+do
+  case "$1" in
+    "d") rm -f "$file" ;; 
+    "p") xwallpaper --zoom "$file" ;;
+    "t") theme "$file" ;;
+  esac 
+done
